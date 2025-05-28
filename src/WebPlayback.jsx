@@ -18,6 +18,8 @@ function WebPlayback(props) {
     const [is_active, setActive] = useState(false);
     const [player, setPlayer] = useState(undefined);
     const [current_track, setTrack] = useState(track);
+    const [endtime, setEndtime] = useState();
+    const [continue_flag, setContinue] = useState(false);
 
     useEffect(() => {
 

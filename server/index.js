@@ -3,15 +3,17 @@ const request = require('request');
 const dotenv = require('dotenv');
 
 const port = 5000
+const spotify_api_base_url = 'https://api.spotify.com/v1'
 
 global.access_token = ''
 
 dotenv.config()
 
+//#region initialize Spotify client creds and redirect URI
 var spotify_client_id = process.env.SPOTIFY_CLIENT_ID
 var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET
-
-var spotify_redirect_uri = 'http://localhost:3000/auth/callback'
+var spotify_redirect_uri = 'http://127.0.0.1:3000/auth/callback'
+//#endregion
 
 var generateRandomString = function (length) {
   var text = '';
@@ -25,6 +27,7 @@ var generateRandomString = function (length) {
 
 var app = express();
 
+//#region auth endpoints
 app.get('/auth/login', (req, res) => {
 
   var scope = "streaming user-read-email user-read-private"
@@ -71,7 +74,36 @@ app.get('/auth/callback', (req, res) => {
 app.get('/auth/token', (req, res) => {
   res.json({ access_token: access_token})
 })
+//#endregion
 
+//#region tracks endpoints
+
+app.get('/tracks/:id', (req, res) => {
+
+  var id = req.params.id
+    
+  const trackOptions = {
+    url: spotify_api_base_url + "/tracks/" + id,
+    headers: {
+      'Authorization': req.headers.authorization
+    }
+  }
+  request.get(trackOptions, function(error, response, body) {
+    if (!error && response.statusCode === 200) {
+      res.status(200).send(body);
+    }
+    else if (error) {
+      res.status(500).send('Error occurred: ' + error);
+    }
+  });
+
+})
+
+
+//#endregion
+
+//#region listen call
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`)
 })
+//#endregion

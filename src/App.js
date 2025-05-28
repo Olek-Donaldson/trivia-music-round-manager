@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import WebPlayback from './WebPlayback'
 import Login from './Login'
+import Round from './Round';
 import './App.css';
 
 function App() {
@@ -16,12 +17,17 @@ function App() {
     }
 
     getToken();
+    console.log('Authorization: Bearer ' + token);
+
 
   }, []);
 
   return (
     <>
-        { (token === '') ? <Login/> : <WebPlayback token={token} /> }
+        { (token === '') ? 
+        <Login/> 
+        : 
+        <Round token={token} /> }
     </>
   );
 }

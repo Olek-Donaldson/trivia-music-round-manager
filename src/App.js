@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import WebPlayback from './WebPlayback'
 import Login from './Login'
-import Round from './Round';
+import Round from './component/Round/Round';
 import './App.css';
 
 function App() {

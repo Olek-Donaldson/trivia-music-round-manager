@@ -99,8 +99,53 @@ app.get('/tracks/:id', (req, res) => {
 
 })
 
+//#endregion
+
+//#region playback endpoints
+
+app.put('/me/player/play', (req, res) => {
+  
+  const pausePlayerOptions = {
+    url: spotify_api_base_url + "/me/player/pause",
+    headers: {
+      'Authorization': req.headers.authorization
+    },
+    data: req.body
+  }
+
+  request.put(pausePlayerOptions, function(error, response, body) {
+    if (!error && response.statusCode === 204) {
+      res.status(200).send(body);
+    }
+    else if (error) {
+      res.status(500).send('Error occurred: ' + error);
+    }
+  });
+
+})
+
+app.put('/me/player/pause', (req, res) => {
+  
+  const pausePlayerOptions = {
+    url: spotify_api_base_url + "/me/player/pause",
+    headers: {
+      'Authorization': req.headers.authorization
+    }
+  }
+
+  request.put(pausePlayerOptions, function(error, response, body) {
+    if (!error && response.statusCode === 204) {
+      res.status(200).send(body);
+    }
+    else if (error) {
+      res.status(500).send('Error occurred: ' + error);
+    }
+  });
+
+})
 
 //#endregion
+
 
 //#region listen call
 app.listen(port, () => {
